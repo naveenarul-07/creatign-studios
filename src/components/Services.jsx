@@ -1,42 +1,45 @@
-import { memo, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { memo, useEffect, useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useCursor } from '../context/CursorContext.jsx';
 import { useIsMobile } from '../hooks/useMediaQuery.js';
 import { useMousePosition } from '../hooks/useMousePosition.js';
 import ProjectVisual from './ProjectVisual.jsx';
 
-function ServiceRow({ service, active, onEnter, onLeave }) {
+function ServiceRow({ service, active, onHover, onLeave, onToggle }) {
   return (
-    <button
-      type="button"
-      className="group w-full border-b border-line text-left"
-      onMouseEnter={onEnter}
+    <article
+      className="border-b border-line"
+      onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      onFocus={onEnter}
-      onBlur={onLeave}
-      aria-expanded={active}
     >
-      <div
-        className={`grid grid-cols-[auto_1fr_auto] items-center gap-4 px-5 py-6 transition-[background-color,padding] duration-500 md:px-10 ${
-          active ? 'bg-paper text-ink md:py-10' : 'bg-transparent md:py-8'
-        }`}
+      <button
+        type="button"
+        className="group w-full text-left"
+        onClick={onToggle}
+        aria-expanded={active}
       >
-        <span
-          className={`font-display text-xs tracking-[0.22em] transition-transform duration-500 ${
-            active ? 'translate-x-2 text-accent-hot' : 'text-muted'
+        <div
+          className={`grid grid-cols-[auto_1fr_auto] items-center gap-4 px-5 py-6 transition-[background-color,padding] duration-500 md:px-10 ${
+            active ? 'bg-paper text-ink md:py-10' : 'bg-transparent md:py-8'
           }`}
         >
-          {service.number}
-        </span>
-        <span className="font-display text-[clamp(1.4rem,3.4vw,3.4rem)] font-medium tracking-[-0.04em]">
-          {service.name}
-        </span>
-        <ArrowUpRight
-          className={`transition-transform duration-500 ${active ? 'rotate-45' : ''}`}
-          size={28}
-        />
-      </div>
+          <span
+            className={`font-display text-xs tracking-[0.22em] transition-transform duration-500 ${
+              active ? 'translate-x-2 text-accent-hot' : 'text-muted'
+            }`}
+          >
+            {service.number}
+          </span>
+          <span className="font-display text-[clamp(1.4rem,3.4vw,3.4rem)] font-medium tracking-[-0.04em]">
+            {service.name}
+          </span>
+          <ArrowUpRight
+            className={`transition-transform duration-500 ${active ? 'rotate-45' : ''}`}
+            size={28}
+            aria-hidden="true"
+          />
+        </div>
+      </button>
       <div
         className={`grid overflow-hidden transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           active ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
@@ -45,28 +48,60 @@ function ServiceRow({ service, active, onEnter, onLeave }) {
         <div className="min-h-0">
           <p
             className={`max-w-2xl px-5 pb-8 text-sm leading-relaxed md:px-10 ${
-              active ? 'bg-paper text-ink/80' : ''
+              active ? 'bg-paper text-ink/80' : 'text-paper-dim'
             }`}
           >
             {service.description}
           </p>
         </div>
       </div>
-    </button>
+    </article>
   );
 }
 
 function Services({ items }) {
   const [active, setActive] = useState(null);
+  const [pinned, setPinned] = useState(null);
+  const previewRef = useRef(null);
   const { setCursorState, enabled } = useCursor();
   const isMobile = useIsMobile();
   const mouse = useMousePosition(enabled && !isMobile);
-  const sectionRef = useRef(null);
+  const current = items.find((item) => item.id === active) || null;
+  const showPreview = Boolean(current) && enabled && !isMobile;
 
-  const current = items.find((item) => item.id === active);
+  useEffect(() => {
+    const node = previewRef.current;
+    if (!node) return;
+    if (!showPreview) {
+      node.style.opacity = '0';
+      return;
+    }
+    node.style.opacity = '1';
+    node.style.transform = `translate3d(${mouse.x + 24}px, ${mouse.y - 86}px, 0)`;
+  }, [mouse.x, mouse.y, showPreview]);
+
+  const open = (id) => {
+    setActive(id);
+    setCursorState({ variant: 'link' });
+  };
+
+  const close = () => {
+    setActive(pinned);
+    setCursorState({ variant: 'default', label: '' });
+  };
+
+  const toggle = (id) => {
+    if (pinned === id) {
+      setPinned(null);
+      if (isMobile) setActive(null);
+      return;
+    }
+    setPinned(id);
+    setActive(id);
+  };
 
   return (
-    <section id="services" ref={sectionRef} className="relative py-20 md:py-28">
+    <section id="services" className="relative py-20 md:py-28">
       <div className="mb-10 flex items-end justify-between px-5 md:px-10">
         <h2 className="font-display text-[clamp(2.2rem,6vw,6rem)] font-medium tracking-[-0.05em]">
           WHAT WE DO
@@ -81,36 +116,26 @@ function Services({ items }) {
             key={service.id}
             service={service}
             active={active === service.id}
-            onEnter={() => {
-              setActive(service.id);
-              setCursorState({ variant: 'link' });
+            onHover={() => {
+              if (!isMobile) open(service.id);
             }}
             onLeave={() => {
-              setActive(null);
-              setCursorState({ variant: 'default' });
+              if (!isMobile) close();
             }}
+            onToggle={() => toggle(service.id)}
           />
         ))}
       </div>
 
-      <AnimatePresence>
-        {current && enabled && !isMobile ? (
-          <motion.div
-            className="pointer-events-none fixed top-0 left-0 z-30 h-52 w-72 overflow-hidden rounded-sm"
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              x: mouse.x + 28,
-              y: mouse.y - 90,
-            }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            transition={{ type: 'spring', stiffness: 220, damping: 24, mass: 0.4 }}
-          >
-            <ProjectVisual visual={current.visual} className="h-full w-full" animated={false} />
-          </motion.div>
+      <div
+        ref={previewRef}
+        className="pointer-events-none fixed top-0 left-0 z-30 hidden h-52 w-72 overflow-hidden rounded-sm opacity-0 md:block"
+        aria-hidden="true"
+      >
+        {current ? (
+          <ProjectVisual visual={current.visual} className="h-full w-full" animated={false} />
         ) : null}
-      </AnimatePresence>
+      </div>
     </section>
   );
 }

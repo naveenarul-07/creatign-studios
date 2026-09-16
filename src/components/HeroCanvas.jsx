@@ -31,9 +31,9 @@ export default function HeroCanvas({ ready }) {
     window.addEventListener('resize', resize);
 
     const orbs = [
-      { x: 0.72, y: 0.38, r: 220, color: '212,255,63', speed: 0.00035 },
-      { x: 0.62, y: 0.58, r: 160, color: '255,77,28', speed: 0.0005 },
-      { x: 0.84, y: 0.52, r: 120, color: '244,240,230', speed: 0.00028 },
+      { x: 0.74, y: 0.36, r: 280, color: '212,255,63', speed: 0.00035 },
+      { x: 0.64, y: 0.56, r: 200, color: '255,77,28', speed: 0.0005 },
+      { x: 0.86, y: 0.48, r: 150, color: '244,240,230', speed: 0.00028 },
     ];
 
     const draw = (now) => {
@@ -61,8 +61,8 @@ export default function HeroCanvas({ ready }) {
           Math.cos(time * orb.speed + i * 1.3) * (reduced ? 0 : 14) +
           parallaxY * (i + 1) * 0.2;
         const gradient = ctx.createRadialGradient(ox, oy, 0, ox, oy, orb.r);
-        gradient.addColorStop(0, `rgba(${orb.color},0.55)`);
-        gradient.addColorStop(0.45, `rgba(${orb.color},0.12)`);
+        gradient.addColorStop(0, `rgba(${orb.color},0.72)`);
+        gradient.addColorStop(0.45, `rgba(${orb.color},0.2)`);
         gradient.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -104,7 +104,7 @@ export default function HeroCanvas({ ready }) {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 h-full w-full"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-50 md:opacity-100"
       aria-hidden="true"
     />
   );
