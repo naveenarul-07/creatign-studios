@@ -19,7 +19,7 @@ export default function Intro() {
       >
         <SplitWords
           text="WE BUILD IDENTITIES, PRODUCTS AND DIGITAL EXPERIENCES FOR BRANDS THAT WANT TO MOVE FORWARD."
-          highlight={['IDENTITIES,', 'PRODUCTS', 'EXPERIENCES', 'FORWARD.']}
+          highlight={['IDENTITIES', 'PRODUCTS', 'EXPERIENCES', 'FORWARD']}
         />
       </motion.h2>
     </section>
