@@ -37,7 +37,7 @@ export default function MagneticButton({
     <motion.div style={{ x: springX, y: springY }} className="inline-flex">
       <Component
         ref={ref}
-        className={`focus-ring ${className}`}
+        className={`focus-ring inline-flex items-center justify-center ${className}`}
         onMouseMove={handleMove}
         onMouseEnter={(event) => {
           setCursorState({ variant: 'button', label: '' });

@@ -6,7 +6,7 @@ import { SplitLines } from './SplitText.jsx';
 
 function CountUp({ value, suffix }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-10%' });
+  const inView = useInView(ref, { once: true, amount: 0.4 });
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
@@ -19,6 +19,7 @@ function CountUp({ value, suffix }) {
       const eased = 1 - (1 - t) ** 3;
       setDisplay(Math.round(eased * value));
       if (t < 1) frame = requestAnimationFrame(tick);
+      else setDisplay(value);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);

@@ -68,14 +68,14 @@ export default function Hero({ ready }) {
           <MagneticButton
             as={Link}
             to="/work"
-            className="rounded-full bg-paper px-7 py-4 font-display text-xs tracking-[0.22em] text-ink transition-colors hover:bg-accent"
+            className="whitespace-nowrap rounded-full bg-accent px-7 py-4 font-display text-xs tracking-[0.22em] text-[#080808] transition-colors hover:bg-paper"
           >
             EXPLORE OUR WORK →
           </MagneticButton>
           <MagneticButton
             as={Link}
             to="/contact"
-            className="rounded-full border border-line px-7 py-4 font-display text-xs tracking-[0.22em] text-paper hover:border-accent hover:text-accent"
+            className="whitespace-nowrap rounded-full border border-line px-7 py-4 font-display text-xs tracking-[0.22em] text-paper hover:border-accent hover:text-accent"
           >
             LET'S TALK
           </MagneticButton>

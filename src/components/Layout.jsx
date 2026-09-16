@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Navbar from './Navbar.jsx';
 import Footer from './Footer.jsx';
 import CustomCursor from './CustomCursor.jsx';
 import Loader from './Loader.jsx';
 import Grain from './Grain.jsx';
 import SmoothScroll from './SmoothScroll.jsx';
-import { pageTransition } from '../utils/animations.js';
+import { easeOutExpo } from '../utils/animations.js';
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery.js';
 
 export default function Layout() {
@@ -39,15 +39,15 @@ export default function Layout() {
       <CustomCursor />
       <Loader onComplete={handleComplete} />
       <Navbar ready={ready} />
-      <AnimatePresence mode="wait">
-        <motion.main
-          id="main"
-          key={location.pathname}
-          {...pageTransition(reduced)}
-        >
-          <Outlet context={{ ready }} />
-        </motion.main>
-      </AnimatePresence>
+      <motion.main
+        id="main"
+        key={location.pathname}
+        initial={reduced ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: easeOutExpo }}
+      >
+        <Outlet context={{ ready }} />
+      </motion.main>
       <Footer />
     </SmoothScroll>
   );
