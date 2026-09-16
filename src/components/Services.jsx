@@ -1,9 +1,7 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useCursor } from '../context/CursorContext.jsx';
 import { useIsMobile } from '../hooks/useMediaQuery.js';
-import { useMousePosition } from '../hooks/useMousePosition.js';
-import ProjectVisual from './ProjectVisual.jsx';
 
 function ServiceRow({ service, active, onHover, onLeave, onToggle }) {
   return (
@@ -62,23 +60,8 @@ function ServiceRow({ service, active, onHover, onLeave, onToggle }) {
 function Services({ items }) {
   const [active, setActive] = useState(null);
   const [pinned, setPinned] = useState(null);
-  const previewRef = useRef(null);
-  const { setCursorState, enabled } = useCursor();
+  const { setCursorState } = useCursor();
   const isMobile = useIsMobile();
-  const mouse = useMousePosition(enabled && !isMobile);
-  const current = items.find((item) => item.id === active) || null;
-  const showPreview = Boolean(current) && enabled && !isMobile;
-
-  useEffect(() => {
-    const node = previewRef.current;
-    if (!node) return;
-    if (!showPreview) {
-      node.style.opacity = '0';
-      return;
-    }
-    node.style.opacity = '1';
-    node.style.transform = `translate3d(${mouse.x + 24}px, ${mouse.y - 86}px, 0)`;
-  }, [mouse.x, mouse.y, showPreview]);
 
   const open = (id) => {
     setActive(id);
@@ -125,16 +108,6 @@ function Services({ items }) {
             onToggle={() => toggle(service.id)}
           />
         ))}
-      </div>
-
-      <div
-        ref={previewRef}
-        className="pointer-events-none fixed top-0 left-0 z-30 hidden h-52 w-72 overflow-hidden rounded-sm opacity-0 md:block"
-        aria-hidden="true"
-      >
-        {current ? (
-          <ProjectVisual visual={current.visual} className="h-full w-full" animated={false} />
-        ) : null}
       </div>
     </section>
   );
