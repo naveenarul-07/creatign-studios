@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { registerGsap } from '../utils/animations.js';
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery.js';
 
 export default function SmoothScroll({ children }) {
@@ -11,21 +8,22 @@ export default function SmoothScroll({ children }) {
 
   useEffect(() => {
     if (reduced) return undefined;
-    registerGsap();
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 1.05,
       smoothWheel: true,
-      wheelMultiplier: 0.95,
+      wheelMultiplier: 0.85,
+      touchMultiplier: 1,
     });
-    lenis.on('scroll', ScrollTrigger.update);
-    const ticker = (time) => {
-      lenis.raf(time * 1000);
+
+    let frame;
+    const raf = (time) => {
+      lenis.raf(time);
+      frame = requestAnimationFrame(raf);
     };
-    gsap.ticker.add(ticker);
-    gsap.ticker.lagSmoothing(0);
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+    frame = requestAnimationFrame(raf);
+
     return () => {
-      gsap.ticker.remove(ticker);
+      cancelAnimationFrame(frame);
       lenis.destroy();
     };
   }, [reduced]);
