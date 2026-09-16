@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import ProjectCard from './ProjectCard.jsx';
 import MagneticButton from './MagneticButton.jsx';
 
@@ -7,10 +8,15 @@ export default function Work({ projects, heading = 'SELECTED WORK', limit }) {
 
   return (
     <section id="work" className="px-5 py-20 md:px-10 md:py-28">
-      <div className="mb-12 flex items-end justify-between gap-6">
-        <h2 className="font-display text-[clamp(2.2rem,6vw,6rem)] font-medium tracking-[-0.05em]">
+      <div className="mb-12 flex items-end justify-between gap-6 overflow-hidden">
+        <motion.h2
+          className="font-display text-[clamp(2.2rem,6vw,6rem)] font-medium tracking-[-0.05em]"
+          initial={{ y: '110%' }}
+          animate={{ y: '0%' }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        >
           {heading}
-        </h2>
+        </motion.h2>
         <span className="hidden font-display text-xs tracking-[0.24em] text-muted md:block">
           03 — PORTFOLIO
         </span>
