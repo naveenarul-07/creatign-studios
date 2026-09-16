@@ -104,7 +104,7 @@ export default function HeroCanvas({ ready }) {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 h-full w-full"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-50 md:opacity-100"
       aria-hidden="true"
     />
   );

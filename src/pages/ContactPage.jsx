@@ -104,7 +104,7 @@ export default function ContactPage() {
         ) : null}
         <MagneticButton
           type="submit"
-          className="rounded-full bg-ink px-8 py-4 font-display text-xs tracking-[0.22em] text-paper disabled:opacity-50"
+          className="rounded-full bg-accent px-8 py-4 font-display text-xs tracking-[0.22em] text-ink disabled:opacity-50"
           disabled={status === 'loading'}
         >
           {status === 'loading' ? 'SENDING…' : 'SEND MESSAGE →'}

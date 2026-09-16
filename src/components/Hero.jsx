@@ -9,7 +9,7 @@ const HEADLINES = ['WE CREATE', 'DIGITAL EXPERIENCES', 'THAT MOVE PEOPLE.'];
 
 export default function Hero({ ready }) {
   return (
-    <section className="relative flex min-h-screen flex-col justify-end overflow-hidden px-5 pb-10 pt-28 md:px-10 md:pb-14">
+    <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden px-5 pb-8 pt-24 md:px-10 md:pb-12">
       <motion.div
         className="absolute inset-0"
         initial={{ opacity: 0 }}
@@ -17,7 +17,7 @@ export default function Hero({ ready }) {
         transition={{ duration: 1.2, ease: easeOutExpo }}
       >
         <HeroCanvas ready={ready} />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/40 to-ink" />
+        <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/75 to-ink md:via-ink/45" />
       </motion.div>
 
       <div className="relative z-10 max-w-[92rem]">
@@ -30,7 +30,7 @@ export default function Hero({ ready }) {
           CREATIVE DIGITAL STUDIO
         </motion.p>
 
-        <h1 className="mt-6 font-display text-[clamp(2.6rem,9.4vw,10.5rem)] font-medium leading-[0.86] tracking-[-0.06em]">
+        <h1 className="mt-5 font-display text-[clamp(2.3rem,6.6vw,7.2rem)] font-medium leading-[0.88] tracking-[-0.06em]">
           {HEADLINES.map((line, index) => (
             <span key={line} className="block overflow-hidden">
               <motion.span
@@ -50,7 +50,7 @@ export default function Hero({ ready }) {
         </h1>
 
         <motion.p
-          className="mt-8 max-w-xl text-sm leading-relaxed text-paper-dim md:text-base"
+          className="mt-6 max-w-xl text-sm leading-relaxed text-paper-dim md:text-base"
           initial={{ opacity: 0, y: 24 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.85, duration: 0.8, ease: easeOutExpo }}
@@ -60,7 +60,7 @@ export default function Hero({ ready }) {
         </motion.p>
 
         <motion.div
-          className="mt-10 flex flex-wrap items-center gap-4"
+          className="mt-8 flex flex-wrap items-center gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={ready ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 1.05, duration: 0.7, ease: easeOutExpo }}
@@ -83,7 +83,7 @@ export default function Hero({ ready }) {
       </div>
 
       <motion.div
-        className="relative z-10 mt-16 flex items-center gap-3 font-display text-[11px] tracking-[0.28em] text-muted"
+        className="relative z-10 mt-10 flex items-center gap-3 font-display text-[11px] tracking-[0.28em] text-muted"
         initial={{ opacity: 0 }}
         animate={ready ? { opacity: 1 } : {}}
         transition={{ delay: 1.3 }}
