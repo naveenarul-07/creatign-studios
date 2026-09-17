@@ -732,13 +732,13 @@ function creative_studio_save_project($project, $order) {
   update_post_meta($id, '_cs_category', $project['category']);
   update_post_meta($id, '_cs_year', $project['year']);
   update_post_meta($id, '_cs_client', $project['client']);
-  update_post_meta($id, '_cs_services', wp_json_encode($project['services']));
+  update_post_meta($id, '_cs_services', wp_json_encode($project['services'], JSON_UNESCAPED_UNICODE));
   update_post_meta($id, '_cs_excerpt', $project['excerpt']);
   update_post_meta($id, '_cs_challenge', $project['challenge']);
   update_post_meta($id, '_cs_approach', $project['approach']);
-  update_post_meta($id, '_cs_process', wp_json_encode($project['process']));
-  update_post_meta($id, '_cs_results', wp_json_encode($project['results']));
-  update_post_meta($id, '_cs_palette', wp_json_encode($project['palette']));
+  update_post_meta($id, '_cs_process', wp_json_encode($project['process'], JSON_UNESCAPED_UNICODE));
+  update_post_meta($id, '_cs_results', wp_json_encode($project['results'], JSON_UNESCAPED_UNICODE));
+  update_post_meta($id, '_cs_palette', wp_json_encode($project['palette'], JSON_UNESCAPED_UNICODE));
   update_post_meta($id, '_cs_visual', $project['visual']);
   update_post_meta($id, '_cs_featured', $project['featured'] ? '1' : '');
   update_post_meta($id, '_cs_size', $project['size']);
@@ -774,7 +774,7 @@ function creative_studio_save_service($service, $order) {
 
   update_post_meta($id, '_cs_number', $service['number']);
   update_post_meta($id, '_cs_summary', $service['summary']);
-  update_post_meta($id, '_cs_tags', wp_json_encode($service['tags']));
+  update_post_meta($id, '_cs_tags', wp_json_encode($service['tags'], JSON_UNESCAPED_UNICODE));
   update_post_meta($id, '_cs_visual', $service['visual']);
 }
 
@@ -847,3 +847,27 @@ function creative_studio_seed_content() {
   update_option('permalink_structure', '/%postname%/');
   update_option('creative_studio_seeded', 1);
 }
+
+/**
+ * Re-save existing CPT JSON meta with unescaped Unicode.
+ * WordPress stripslashes() turned \u2014 / \u2212 into the literals "u2014" / "u2212".
+ * Updates existing posts by slug; does not insert duplicates.
+ */
+function creative_studio_repair_unicode_meta() {
+  if (get_option('creative_studio_unicode_meta')) {
+    return;
+  }
+  if (!get_option('creative_studio_seeded')) {
+    return;
+  }
+
+  foreach (creative_studio_seed_projects() as $index => $project) {
+    creative_studio_save_project($project, $index + 1);
+  }
+  foreach (creative_studio_seed_services() as $index => $service) {
+    creative_studio_save_service($service, $index + 1);
+  }
+
+  update_option('creative_studio_unicode_meta', 1);
+}
+add_action('init', 'creative_studio_repair_unicode_meta', 20);
