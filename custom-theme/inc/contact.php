@@ -102,10 +102,45 @@ function creative_studio_contact_rate_limited() {
 }
 
 function creative_studio_store_contact($data) {
+  global $wpdb;
+
   $name    = sanitize_text_field($data['name']);
   $email   = sanitize_email($data['email']);
   $company = sanitize_text_field($data['company']);
   $message = sanitize_textarea_field($data['message']);
+
+  $table_name = 'contacts';
+  $charset_collate = $wpdb->get_charset_collate();
+  $table_created = $wpdb->query(
+    "CREATE TABLE IF NOT EXISTS {$table_name} (
+      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+      name VARCHAR(80) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      company VARCHAR(100) NOT NULL DEFAULT '',
+      message VARCHAR(2000) NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+    ) {$charset_collate}"
+  );
+
+  if (false === $table_created) {
+    return new WP_Error('contact_table_error', 'Unable to prepare the contacts table.');
+  }
+
+  $inserted = $wpdb->insert(
+    $table_name,
+    [
+      'name'    => $name,
+      'email'   => $email,
+      'company' => $company,
+      'message' => $message,
+    ],
+    ['%s', '%s', '%s', '%s']
+  );
+
+  if (false === $inserted) {
+    return new WP_Error('contact_insert_error', 'Unable to save the contact inquiry.');
+  }
 
   $post_id = wp_insert_post([
     'post_type'    => 'cs_contact',
@@ -177,13 +212,15 @@ function creative_studio_rest_contact(WP_REST_Request $request) {
     $payload = [];
   }
 
-  $nonce = '';
+  $nonce = $request->get_header('X-WP-Nonce');
+  $nonce_action = 'wp_rest';
   if (!empty($payload['_wpnonce'])) {
     $nonce = sanitize_text_field((string) $payload['_wpnonce']);
+    $nonce_action = 'creative_studio_contact';
     unset($payload['_wpnonce']);
   }
 
-  if (!creative_studio_verify_contact_nonce($nonce)) {
+  if (!is_string($nonce) || !wp_verify_nonce($nonce, $nonce_action)) {
     return new WP_REST_Response([
       'success' => false,
       'error'   => 'Invalid request.',

@@ -210,7 +210,7 @@ function creative_studio_enqueue_assets() {
     );
     wp_localize_script('creative-studio-contact-page', 'CreativeStudioContact', [
       'restUrl' => esc_url_raw(rest_url('creative-studio/v1/contact')),
-      'nonce'   => wp_create_nonce('creative_studio_contact'),
+      'nonce'   => wp_create_nonce('wp_rest'),
     ]);
   }
 }

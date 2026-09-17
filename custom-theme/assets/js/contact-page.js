@@ -75,7 +75,6 @@
         email: (form.elements.email && form.elements.email.value) || '',
         company: (form.elements.company && form.elements.company.value) || '',
         message: (form.elements.message && form.elements.message.value) || '',
-        _wpnonce: config.nonce || '',
       };
 
       window
@@ -84,6 +83,7 @@
           credentials: 'same-origin',
           headers: {
             'Content-Type': 'application/json',
+            'X-WP-Nonce': config.nonce || '',
           },
           body: JSON.stringify(payload),
         })
