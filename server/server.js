@@ -1,5 +1,3 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -14,12 +12,8 @@ import { errorHandler, notFound } from './middleware/validate.js';
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const ROOT = path.resolve(__dirname, '..');
-
 const PORT = Number(process.env.PORT) || 5000;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:8080';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const database = await connectDatabase();
@@ -56,18 +50,6 @@ app.use('/api/projects', createProjectRouter(store));
 app.use('/api/services', createServiceRouter(store));
 app.use('/api/testimonials', createTestimonialRouter(store));
 app.use('/api/contact', contactLimiter, createContactRouter(store));
-
-if (isProduction) {
-  const dist = path.join(ROOT, 'dist');
-  app.use(express.static(dist));
-  app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api')) {
-      next();
-      return;
-    }
-    res.sendFile(path.join(dist, 'index.html'));
-  });
-}
 
 app.use('/api', notFound);
 app.use(errorHandler);
