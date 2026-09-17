@@ -3,8 +3,8 @@ import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
+import { connectDatabase } from './db.js';
 import { createStore } from './models/store.js';
 import { createProjectRouter } from './routes/projects.js';
 import { createServiceRouter } from './routes/services.js';
@@ -22,21 +22,8 @@ const PORT = Number(process.env.PORT) || 5000;
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
 const isProduction = process.env.NODE_ENV === 'production';
 
-async function connectDatabase() {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) return false;
-  try {
-    await mongoose.connect(uri);
-    console.log('Connected to MongoDB');
-    return true;
-  } catch (error) {
-    console.warn('MongoDB connection failed, using in-memory data.', error.message);
-    return false;
-  }
-}
-
-const useMongo = await connectDatabase();
-const store = createStore(useMongo);
+const database = await connectDatabase();
+const store = createStore(database);
 
 const app = express();
 
@@ -61,7 +48,7 @@ app.get('/api/health', (req, res) => {
   res.json({
     success: true,
     status: 'ok',
-    storage: useMongo ? 'mongodb' : 'memory',
+    storage: database ? 'mysql' : 'memory',
   });
 });
 

@@ -67,7 +67,7 @@ All JSON responses follow `{ success, data }` or `{ success, error }`.
 
 ### `GET /api/health`
 
-Service status and storage mode (`memory` or `mongodb`).
+Service status and storage mode (`memory` or `mysql`).
 
 ### `GET /api/projects`
 
@@ -105,6 +105,11 @@ Validation:
 
 Success: `201` with a confirmation message.  
 Failure: `400` with `fields` for invalid input. Contact submissions are rate limited.
+
+### MySQL setup
+
+Copy `.env.example` to `.env`, set the MySQL connection values, and start the server with
+`npm run dev:server`. The server creates the `contacts` table automatically.
 
 ## Project structure
 

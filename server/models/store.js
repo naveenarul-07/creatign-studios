@@ -1,8 +1,4 @@
 import { projects, services, testimonials } from '../data/content.js';
-import { Project } from '../models/Project.js';
-import { Service } from '../models/Service.js';
-import { Testimonial } from '../models/Testimonial.js';
-import { Contact } from '../models/Contact.js';
 
 const memory = {
   projects: [...projects],
@@ -11,28 +7,27 @@ const memory = {
   contacts: [],
 };
 
-export function createStore(useMongo) {
-  if (useMongo) {
+export function createStore(database) {
+  if (database) {
     return {
       async getProjects() {
-        const docs = await Project.find().lean();
-        return docs.length ? docs : memory.projects;
+        return memory.projects;
       },
       async getProject(id) {
-        const doc = await Project.findOne({ id }).lean();
-        return doc || memory.projects.find((item) => item.id === id) || null;
+        return memory.projects.find((item) => item.id === id) || null;
       },
       async getServices() {
-        const docs = await Service.find().lean();
-        return docs.length ? docs : memory.services;
+        return memory.services;
       },
       async getTestimonials() {
-        const docs = await Testimonial.find().lean();
-        return docs.length ? docs : memory.testimonials;
+        return memory.testimonials;
       },
       async createContact(payload) {
-        const doc = await Contact.create(payload);
-        return doc.toObject();
+        const [result] = await database.execute(
+          'INSERT INTO contacts (name, email, company, message) VALUES (?, ?, ?, ?)',
+          [payload.name, payload.email, payload.company || '', payload.message],
+        );
+        return { id: result.insertId, ...payload };
       },
     };
   }
