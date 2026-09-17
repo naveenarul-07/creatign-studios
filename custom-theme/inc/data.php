@@ -402,11 +402,7 @@ function creative_studio_url($path) {
   }
 
   if (preg_match('#^/work/([^/]+)/?$#', $path, $matches)) {
-    $project = creative_studio_get_project($matches[1]);
-    if (!empty($project['permalink'])) {
-      return $project['permalink'];
-    }
-    return home_url('/work/' . $matches[1] . '/');
+    return creative_studio_project_permalink(['id' => $matches[1]]);
   }
 
   if ('/studio' === $path) {
@@ -489,6 +485,32 @@ function creative_studio_decode_meta($value, $default = []) {
   return is_array($decoded) ? $decoded : $default;
 }
 
+/**
+ * Project permalink from the CPT, never a hardcoded domain.
+ * Fallback shape matches /work/{slug}/ when the post is not in the database yet.
+ */
+function creative_studio_project_permalink($project) {
+  if (!is_array($project)) {
+    return home_url('/');
+  }
+
+  if (!empty($project['permalink'])) {
+    return $project['permalink'];
+  }
+
+  $slug = isset($project['id']) ? sanitize_title((string) $project['id']) : '';
+  if ('' === $slug) {
+    return home_url('/');
+  }
+
+  $post = get_page_by_path($slug, OBJECT, 'project');
+  if ($post instanceof WP_Post) {
+    return get_permalink($post);
+  }
+
+  return home_url(user_trailingslashit('work/' . $slug));
+}
+
 function creative_studio_map_project_post($post) {
   $post = get_post($post);
   if (!$post) {
@@ -535,9 +557,16 @@ function creative_studio_get_projects($limit = -1) {
     return $projects;
   }
 
-  return $limit > 0
+  $projects = $limit > 0
     ? array_slice(creative_studio_seed_projects(), 0, $limit)
     : creative_studio_seed_projects();
+
+  foreach ($projects as &$project) {
+    $project['permalink'] = creative_studio_project_permalink($project);
+  }
+  unset($project);
+
+  return $projects;
 }
 
 function creative_studio_get_project($id) {
@@ -554,6 +583,7 @@ function creative_studio_get_project($id) {
 
   foreach (creative_studio_seed_projects() as $project) {
     if ($project['id'] === $id) {
+      $project['permalink'] = creative_studio_project_permalink($project);
       return $project;
     }
   }

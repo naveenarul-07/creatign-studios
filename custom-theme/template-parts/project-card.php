@@ -23,7 +23,7 @@ $size        = isset($project['size']) ? $project['size'] : 'square';
 $media       = isset($media_class[$size]) ? $media_class[$size] : $media_class['square'];
 $from_left   = 0 === $index % 2;
 $article_x   = $from_left ? '-36px' : '36px';
-$url         = !empty($project['permalink']) ? $project['permalink'] : creative_studio_url('/work/' . $project['id']);
+$url         = creative_studio_project_permalink($project);
 $group_class = 'wide' === $size ? 'md:col-span-2' : '';
 ?>
 <article
@@ -36,6 +36,7 @@ $group_class = 'wide' === $size ? 'md:col-span-2' : '';
     class="js-project-link focus-ring block"
     data-cursor="view"
     data-cursor-label="<?php echo esc_attr($project['name']); ?>"
+    aria-label="<?php echo esc_attr($project['title']); ?>"
   >
     <div class="relative overflow-hidden <?php echo esc_attr($media); ?>">
       <div class="js-project-visual-shift absolute inset-0 origin-center will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">

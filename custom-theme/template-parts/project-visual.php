@@ -86,13 +86,19 @@ $c = isset($variants[$visual]) ? $variants[$visual] : $variants['neon'];
           opacity="0.9"
         />
       <?php endfor; ?>
-    <?php else : ?>
+    <?php elseif ('echo' === $visual) : ?>
       <rect width="100%" height="100%" fill="<?php echo esc_attr($c['bg']); ?>" />
       <rect x="10%" y="16%" width="80%" height="6%" fill="<?php echo esc_attr($c['ink']); ?>" />
       <rect x="10%" y="28%" width="62%" height="3%" fill="<?php echo esc_attr($c['paper']); ?>" />
       <rect x="10%" y="36%" width="70%" height="3%" fill="<?php echo esc_attr($c['paper']); ?>" opacity="0.5" />
       <rect x="10%" y="52%" width="48%" height="32%" fill="<?php echo esc_attr($c['hot']); ?>" />
       <rect x="62%" y="52%" width="28%" height="32%" fill="<?php echo esc_attr($c['ink']); ?>" opacity="0.2" />
+    <?php else : ?>
+      <rect width="100%" height="100%" fill="<?php echo esc_attr($c['bg']); ?>" />
+      <circle cx="78%" cy="30%" r="28%" fill="<?php echo esc_attr($c['ink']); ?>" opacity="0.9" />
+      <circle cx="70%" cy="42%" r="16%" fill="<?php echo esc_attr($c['hot']); ?>" opacity="0.85" />
+      <rect x="8%" y="18%" width="2" height="64%" fill="<?php echo esc_attr($c['paper']); ?>" opacity="0.35" />
+      <rect x="12%" y="28%" width="36%" height="1.5" fill="<?php echo esc_attr($c['ink']); ?>" />
     <?php endif; ?>
   </svg>
   <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10"></div>

@@ -55,3 +55,19 @@ function creative_studio_register_post_types() {
   ]);
 }
 add_action('init', 'creative_studio_register_post_types');
+
+/**
+ * Archive at /work/ lists every project. Home still slices to 5 in the Work template.
+ */
+function creative_studio_project_archive_query($query) {
+  if (is_admin() || !$query->is_main_query()) {
+    return;
+  }
+
+  if ($query->is_post_type_archive('project')) {
+    $query->set('posts_per_page', -1);
+    $query->set('orderby', 'menu_order');
+    $query->set('order', 'ASC');
+  }
+}
+add_action('pre_get_posts', 'creative_studio_project_archive_query');

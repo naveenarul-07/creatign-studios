@@ -7,9 +7,16 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-$heading  = isset($args['heading']) ? $args['heading'] : 'SELECTED WORK';
-$limit    = isset($args['limit']) ? (int) $args['limit'] : 0;
-$projects = $limit > 0 ? creative_studio_get_projects($limit) : creative_studio_get_projects();
+$heading = isset($args['heading']) ? $args['heading'] : 'SELECTED WORK';
+$limit   = isset($args['limit']) ? (int) $args['limit'] : 0;
+
+if (isset($args['projects']) && is_array($args['projects'])) {
+  $projects = $args['projects'];
+} else {
+  $projects = $limit > 0
+    ? creative_studio_get_projects($limit)
+    : creative_studio_get_projects();
+}
 ?>
 <section id="work" class="px-5 py-20 md:px-10 md:py-28">
   <div class="mb-12 flex items-end justify-between gap-6">
@@ -32,7 +39,7 @@ $projects = $limit > 0 ? creative_studio_get_projects($limit) : creative_studio_
       ?>
     <?php endforeach; ?>
   </div>
-  <?php if ($limit) : ?>
+  <?php if ($limit > 0) : ?>
     <div class="mt-14">
       <span class="js-magnetic-wrap inline-flex">
         <a
