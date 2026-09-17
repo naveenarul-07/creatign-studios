@@ -61,8 +61,12 @@
     var lines = document.querySelectorAll('.js-split-line');
 
     if (CS.reduced) {
-      gsap.set(words, { y: '0%', opacity: 1 });
-      gsap.set(lines, { y: '0%' });
+      if (words.length) {
+        gsap.set(words, { y: '0%', opacity: 1 });
+      }
+      if (lines.length) {
+        gsap.set(lines, { y: '0%' });
+      }
       return;
     }
 
