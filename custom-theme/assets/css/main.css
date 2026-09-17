@@ -1392,6 +1392,23 @@ html.is-reduced-motion .js-project-hero-media {
   clip-path: inset(0% 0 0 0) !important;
   transform: none !important;
 }
+.js-contact-form input, .js-contact-form textarea {
+  appearance: none;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+}
+.js-contact-form textarea {
+  display: block;
+}
+.js-contact-form input:focus, .js-contact-form textarea:focus {
+  outline: none;
+}
+.js-contact-form input::placeholder, .js-contact-form textarea::placeholder {
+  color: var(--color-muted);
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;

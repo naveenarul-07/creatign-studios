@@ -7,14 +7,15 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-$compact = !empty($args['compact']);
-$stats   = creative_studio_get_studio_stats();
-$team    = creative_studio_get_team();
-$lines   = ['WE ARE A SMALL STUDIO', 'WITH A BIG DIGITAL', 'MINDSET.'];
+$compact     = !empty($args['compact']);
+$heading_tag = isset($args['heading_tag']) && 'h1' === $args['heading_tag'] ? 'h1' : 'h2';
+$stats       = creative_studio_get_studio_stats();
+$team        = creative_studio_get_team();
+$lines       = ['WE ARE A SMALL STUDIO', 'WITH A BIG DIGITAL', 'MINDSET.'];
 ?>
 <section id="studio" class="px-5 py-20 md:px-10 md:py-32">
   <p class="font-display text-[11px] tracking-[0.28em] text-muted">04 — STUDIO</p>
-  <h2 class="mt-6 max-w-5xl font-display text-[clamp(2rem,5.4vw,5.6rem)] font-medium leading-[0.95] tracking-[-0.05em]">
+  <<?php echo tag_escape($heading_tag); ?> class="mt-6 max-w-5xl font-display text-[clamp(2rem,5.4vw,5.6rem)] font-medium leading-[0.95] tracking-[-0.05em]">
     <span class="block">
       <?php foreach ($lines as $index => $line) : ?>
         <span class="block overflow-hidden">
@@ -26,7 +27,7 @@ $lines   = ['WE ARE A SMALL STUDIO', 'WITH A BIG DIGITAL', 'MINDSET.'];
         </span>
       <?php endforeach; ?>
     </span>
-  </h2>
+  </<?php echo tag_escape($heading_tag); ?>>
 
   <div class="mt-16 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
     <div class="max-w-xl space-y-6 text-paper-dim">

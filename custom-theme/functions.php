@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-define('CREATIVE_STUDIO_VERSION', '1.4.0');
+define('CREATIVE_STUDIO_VERSION', '1.5.0');
 define('CREATIVE_STUDIO_DIR', get_template_directory());
 define('CREATIVE_STUDIO_URI', get_template_directory_uri());
 

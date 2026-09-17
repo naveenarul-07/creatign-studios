@@ -7,7 +7,8 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-$social_links = creative_studio_get_social_links();
+$social_links  = creative_studio_get_social_links();
+$contact_email = creative_studio_get_contact_email();
 ?>
 <section
   id="contact"
@@ -32,11 +33,11 @@ $social_links = creative_studio_get_social_links();
       </a>
     </span>
     <a
-      href="mailto:hello@creativestudio.com"
+      href="<?php echo esc_url('mailto:' . $contact_email); ?>"
       class="focus-ring font-display text-sm tracking-[0.08em] underline-offset-4 hover:underline"
       data-cursor="link"
     >
-      hello@creativestudio.com
+      <?php echo esc_html($contact_email); ?>
     </a>
   </div>
   <ul class="mt-16 flex flex-wrap gap-6 font-display text-xs tracking-[0.2em]">

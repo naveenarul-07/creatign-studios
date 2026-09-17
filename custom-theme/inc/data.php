@@ -454,6 +454,10 @@ function creative_studio_get_social_links() {
   return apply_filters('creative_studio_social_links', creative_studio_seed_social_links());
 }
 
+function creative_studio_get_contact_email() {
+  return apply_filters('creative_studio_contact_email', 'hello@creativestudio.com');
+}
+
 function creative_studio_get_studio_stats() {
   return apply_filters('creative_studio_studio_stats', creative_studio_seed_studio_stats());
 }

@@ -199,6 +199,20 @@ function creative_studio_enqueue_assets() {
       true
     );
   }
+
+  if (is_page('contact')) {
+    wp_enqueue_script(
+      'creative-studio-contact-page',
+      creative_studio_asset('/assets/js/contact-page.js'),
+      ['creative-studio-main'],
+      $version,
+      true
+    );
+    wp_localize_script('creative-studio-contact-page', 'CreativeStudioContact', [
+      'restUrl' => esc_url_raw(rest_url('creative-studio/v1/contact')),
+      'nonce'   => wp_create_nonce('creative_studio_contact'),
+    ]);
+  }
 }
 add_action('wp_enqueue_scripts', 'creative_studio_enqueue_assets');
 
