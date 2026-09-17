@@ -52,6 +52,15 @@
   CS.easeOutExpo = cubicBezierEase(0.16, 1, 0.3, 1);
   CS.easeInOutExpo = cubicBezierEase(0.87, 0, 0.13, 1);
   CS.reduced = media('(prefers-reduced-motion: reduce)').matches;
+  CS._booted = CS._booted || {};
+
+  CS.initOnce = function (key, fn) {
+    if (CS._booted[key]) {
+      return;
+    }
+    CS._booted[key] = true;
+    fn();
+  };
 
   CS.isMobile = function () {
     return media('(max-width: 768px)').matches;

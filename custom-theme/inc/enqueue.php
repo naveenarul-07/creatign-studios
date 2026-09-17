@@ -125,6 +125,70 @@ function creative_studio_enqueue_assets() {
     $version,
     true
   );
+
+  wp_enqueue_script(
+    'creative-studio-hero-canvas',
+    creative_studio_asset('/assets/js/hero-canvas.js'),
+    ['creative-studio-main'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-marquee',
+    creative_studio_asset('/assets/js/marquee.js'),
+    ['creative-studio-main'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-split-text',
+    creative_studio_asset('/assets/js/split-text.js'),
+    ['creative-studio-main', 'creative-studio-gsap', 'creative-studio-scrolltrigger'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-services',
+    creative_studio_asset('/assets/js/services.js'),
+    ['creative-studio-main'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-project-cards',
+    creative_studio_asset('/assets/js/project-cards.js'),
+    ['creative-studio-main', 'creative-studio-gsap'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-count-up',
+    creative_studio_asset('/assets/js/count-up.js'),
+    ['creative-studio-main', 'creative-studio-gsap'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-process',
+    creative_studio_asset('/assets/js/process.js'),
+    ['creative-studio-main', 'creative-studio-gsap', 'creative-studio-scrolltrigger'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-testimonials',
+    creative_studio_asset('/assets/js/testimonials.js'),
+    ['creative-studio-main', 'creative-studio-gsap'],
+    $version,
+    true
+  );
 }
 add_action('wp_enqueue_scripts', 'creative_studio_enqueue_assets');
 

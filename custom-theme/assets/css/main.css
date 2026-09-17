@@ -240,6 +240,9 @@
   .inset-0 {
     inset: 0px;
   }
+  .inset-x-0 {
+    inset-inline: 0px;
+  }
   .-top-6 {
     top: calc(var(--spacing) * -6);
   }

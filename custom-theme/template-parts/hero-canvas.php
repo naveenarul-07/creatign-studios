@@ -1,7 +1,6 @@
 <?php
 /**
  * Hero canvas. Matches HeroCanvas.jsx markup.
- * Animation is bound when the hero section (Step 3) is present.
  */
 
 if (!defined('ABSPATH')) {
