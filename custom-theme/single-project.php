@@ -239,15 +239,6 @@ get_header();
       </span>
     </section>
   <?php endif; ?>
-
-  <p class="px-5 pb-16 md:px-10">
-    <a
-      href="<?php echo esc_url(creative_studio_url('/work')); ?>"
-      class="focus-ring font-display text-sm tracking-[0.18em] text-accent"
-    >
-      BACK TO WORK →
-    </a>
-  </p>
 </article>
 <?php
 get_footer();
