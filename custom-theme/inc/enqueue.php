@@ -189,6 +189,16 @@ function creative_studio_enqueue_assets() {
     $version,
     true
   );
+
+  if (is_singular('project')) {
+    wp_enqueue_script(
+      'creative-studio-project-page',
+      creative_studio_asset('/assets/js/project-page.js'),
+      ['creative-studio-main', 'creative-studio-gsap'],
+      $version,
+      true
+    );
+  }
 }
 add_action('wp_enqueue_scripts', 'creative_studio_enqueue_assets');
 
