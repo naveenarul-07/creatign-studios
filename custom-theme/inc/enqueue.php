@@ -218,10 +218,12 @@ add_action('wp_enqueue_scripts', 'creative_studio_enqueue_assets');
 
 /**
  * Google Fonts rejects the cache-busting ver query WordPress appends.
+ * remove_query_arg() also collapses duplicate `family` keys, which would
+ * drop Inter and leave only Space Grotesk. Return the full URL as-is.
  */
 function creative_studio_style_loader_src($src, $handle) {
   if ('creative-studio-fonts' === $handle) {
-    return remove_query_arg('ver', $src);
+    return creative_studio_font_url();
   }
 
   return $src;

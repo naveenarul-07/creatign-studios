@@ -20,11 +20,13 @@
     gsap.registerPlugin(ScrollTrigger);
 
     var mm = gsap.matchMedia();
-    mm.add('(min-width: 768px)', function () {
+    // React useIsMobile is (max-width: 768px); horizontal pin is the inverse.
+    mm.add('(min-width: 769px)', function () {
       if (CS.reduced) {
         return function () {};
       }
 
+      pin.classList.add('flex', 'h-screen', 'flex-col', 'justify-center', 'overflow-hidden');
       track.classList.remove('flex-col');
       track.classList.add('w-max');
       bar.style.width = '0%';
@@ -50,6 +52,7 @@
           tween.scrollTrigger.kill();
         }
         tween.kill();
+        pin.classList.remove('flex', 'h-screen', 'flex-col', 'justify-center', 'overflow-hidden');
         track.classList.add('flex-col');
         track.classList.remove('w-max');
         gsap.set(track, { x: 0 });
