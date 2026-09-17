@@ -422,6 +422,17 @@ function creative_studio_url($path) {
   return home_url($path);
 }
 
+function creative_studio_is_missing_project() {
+  global $wp;
+
+  $request = isset($wp->request) ? trim((string) $wp->request, '/') : '';
+  if (!preg_match('#^work/[^/]+$#', $request)) {
+    return false;
+  }
+
+  return is_404();
+}
+
 function creative_studio_get_nav_links() {
   return apply_filters('creative_studio_nav_links', creative_studio_seed_nav_links());
 }
