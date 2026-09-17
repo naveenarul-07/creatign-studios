@@ -1,8 +1,6 @@
 <?php
 /**
- * Stylesheet and font loading.
- *
- * JavaScript from later conversion steps is not enqueued here yet.
+ * Stylesheet, font, vendor, and theme script loading.
  */
 
 if (!defined('ABSPATH')) {
@@ -11,6 +9,10 @@ if (!defined('ABSPATH')) {
 
 function creative_studio_font_url() {
   return 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap';
+}
+
+function creative_studio_asset($relative) {
+  return CREATIVE_STUDIO_URI . $relative;
 }
 
 function creative_studio_resource_hints($urls, $relation_type) {
@@ -29,6 +31,8 @@ function creative_studio_resource_hints($urls, $relation_type) {
 add_filter('wp_resource_hints', 'creative_studio_resource_hints', 10, 2);
 
 function creative_studio_enqueue_assets() {
+  $version = CREATIVE_STUDIO_VERSION;
+
   wp_enqueue_style(
     'creative-studio-fonts',
     creative_studio_font_url(),
@@ -37,10 +41,89 @@ function creative_studio_enqueue_assets() {
   );
 
   wp_enqueue_style(
+    'creative-studio-lenis',
+    creative_studio_asset('/assets/css/vendor/lenis.css'),
+    [],
+    '1.2.3'
+  );
+
+  wp_enqueue_style(
     'creative-studio',
-    CREATIVE_STUDIO_URI . '/assets/css/main.css',
-    ['creative-studio-fonts'],
-    CREATIVE_STUDIO_VERSION
+    creative_studio_asset('/assets/css/main.css'),
+    ['creative-studio-fonts', 'creative-studio-lenis'],
+    $version
+  );
+
+  wp_enqueue_script(
+    'creative-studio-gsap',
+    creative_studio_asset('/assets/js/vendor/gsap.min.js'),
+    [],
+    '3.12.7',
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-scrolltrigger',
+    creative_studio_asset('/assets/js/vendor/ScrollTrigger.min.js'),
+    ['creative-studio-gsap'],
+    '3.12.7',
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-lenis',
+    creative_studio_asset('/assets/js/vendor/lenis.min.js'),
+    [],
+    '1.2.3',
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-main',
+    creative_studio_asset('/assets/js/main.js'),
+    ['creative-studio-gsap', 'creative-studio-scrolltrigger', 'creative-studio-lenis'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-loader',
+    creative_studio_asset('/assets/js/loader.js'),
+    ['creative-studio-main', 'creative-studio-gsap'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-cursor',
+    creative_studio_asset('/assets/js/cursor.js'),
+    ['creative-studio-main'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-magnetic',
+    creative_studio_asset('/assets/js/magnetic.js'),
+    ['creative-studio-main'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-navbar',
+    creative_studio_asset('/assets/js/navbar.js'),
+    ['creative-studio-main', 'creative-studio-gsap'],
+    $version,
+    true
+  );
+
+  wp_enqueue_script(
+    'creative-studio-lenis-init',
+    creative_studio_asset('/assets/js/lenis-init.js'),
+    ['creative-studio-main', 'creative-studio-gsap', 'creative-studio-scrolltrigger', 'creative-studio-lenis'],
+    $version,
+    true
   );
 }
 add_action('wp_enqueue_scripts', 'creative_studio_enqueue_assets');

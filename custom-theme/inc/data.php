@@ -430,6 +430,30 @@ function creative_studio_get_nav_links() {
   return apply_filters('creative_studio_nav_links', creative_studio_seed_nav_links());
 }
 
+function creative_studio_is_current_href($href) {
+  if (!is_string($href) || str_contains($href, '#')) {
+    return false;
+  }
+
+  if ('/work' === $href) {
+    return is_post_type_archive('project') || is_singular('project');
+  }
+
+  if ('/studio' === $href) {
+    return is_page('studio');
+  }
+
+  if ('/contact' === $href) {
+    return is_page('contact');
+  }
+
+  if ('/' === $href) {
+    return is_front_page();
+  }
+
+  return false;
+}
+
 function creative_studio_get_social_links() {
   return apply_filters('creative_studio_social_links', creative_studio_seed_social_links());
 }

@@ -126,3 +126,12 @@ img {
     scroll-behavior: auto;
   }
 }
+
+html.is-reduced-motion .js-loader {
+  display: none !important;
+}
+
+html.is-reduced-motion .js-site-header {
+  opacity: 1 !important;
+  transform: none !important;
+}
