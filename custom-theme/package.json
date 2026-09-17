@@ -1,0 +1,18 @@
+{
+  "name": "creative-studio-theme",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Build tooling for the Creative Studio WordPress theme CSS and vendor copies.",
+  "scripts": {
+    "build:css": "tailwindcss -i ./assets/css/src/theme.css -o ./assets/css/main.css",
+    "copy:vendor": "mkdir -p assets/js/vendor assets/css/vendor && cp node_modules/gsap/dist/gsap.min.js assets/js/vendor/gsap.min.js && cp node_modules/gsap/dist/ScrollTrigger.min.js assets/js/vendor/ScrollTrigger.min.js && cp node_modules/lenis/dist/lenis.min.js assets/js/vendor/lenis.min.js && cp node_modules/lenis/dist/lenis.css assets/css/vendor/lenis.css"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.3",
+    "tailwindcss": "^4.1.3"
+  },
+  "dependencies": {
+    "gsap": "^3.12.7",
+    "lenis": "^1.2.3"
+  }
+}
