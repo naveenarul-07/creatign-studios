@@ -6,3 +6,7 @@ dist
 .vite
 coverage
 custom-theme/node_modules
+omnitech/storage/contacts.json
+omnitech/storage/applications.json
+omnitech/storage/resumes/*
+!omnitech/storage/resumes/.gitkeep

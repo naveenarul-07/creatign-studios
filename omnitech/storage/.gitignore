@@ -1,0 +1,4 @@
+contacts.json
+applications.json
+resumes/*
+!.gitignore

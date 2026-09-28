@@ -1,3 +1,14 @@
+# OMNITECH Systems site
+
+The public site replica lives in `omnitech/`. It is plain HTML, CSS, and JavaScript rendered by PHP, with contact and job-application forms stored on the server.
+
+```bash
+cd omnitech
+php -S localhost:8080 router.php
+```
+
+Open [http://localhost:8080](http://localhost:8080). Pages follow the live site: Home, About, Solutions & Services, Contract Lifecycle Management, Contact, Careers, job posts, Privacy, Terms, and Insights. Submissions are written to `omnitech/storage/` and are not committed.
+
 # Creative Studio
 
 WordPress theme for a premium creative studio site. Editorial typography, cinematic motion, and an interactive portfolio.
